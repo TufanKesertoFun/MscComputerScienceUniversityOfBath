@@ -1,0 +1,29 @@
+This document details the protocol for interacting with the NewBank server.  
+
+A customer enters the command below and sees the messages returned 
+
+SHOWMYACCOUNTS
+Returns a list of all the customers accounts along with their current balance 
+e.g. Main: 1000.0 
+
+NEWACCOUNT <Name>
+e.g. NEWACCOUNT CURRENT
+Returns SUCCESS or FAIL
+
+MOVE <Amount> <From> <To>
+e.g. MOVE 100 CURRENT SAVINGS 
+Returns SUCCESS or FAIL
+
+PAY <Person/Company> <Amount>  
+e.g. PAY John 100
+Returns SUCCESS or FAIL
+
+MARKETPLACE
+e.g. MARKETPLACE
+Type "1" to enter a new loan request
+Type "2" to view available requests and accept or reject them 
+Returns SUCCESS or FAIL
+
+DEPOSIT <Amount> <To>
+e.g. DEPOSIT 100 CURRENT
+Returns SUCCESS or FAIL
