@@ -1,0 +1,32 @@
+[debug] Created transactional ClassFileManager with tempDir = C:\Users\tufan\Downloads\Apache-Spark-Demo\target\scala-2.11\classes.bak
+[debug] About to delete class files:
+[debug] We backup class files:
+[debug] Registering generated classes:
+[debug] 	SaveSalesSequence$$anonfun$1.class
+[debug] 	FilePreparer$.class
+[debug] 	SaveProductJSON.class
+[debug] 	SaveSupplierAVRO$$typecreator5$1.class
+[debug] 	FilePreparer$$anonfun$3.class
+[debug] 	SaveInventoryORC$$typecreator5$1.class
+[debug] 	SaveOrderDetailsKudu.class
+[debug] 	SaveProductJSON$$typecreator5$1.class
+[debug] 	FilePreparer$$anonfun$1.class
+[debug] 	FilePreparer.class
+[debug] 	FilePreparer$$anonfun$6.class
+[debug] 	SaveCustomerFeedbackParquet$$typecreator5$1.class
+[debug] 	FilePreparer$$anonfun$7.class
+[debug] 	FilePreparer$$anonfun$8.class
+[debug] 	SaveSalesSequence.class
+[debug] 	FilePreparer$$anonfun$5.class
+[debug] 	SaveSupplierAVRO.class
+[debug] 	SaveCustomerCSV$$typecreator5$1.class
+[debug] 	FilePreparer$$anonfun$2.class
+[debug] 	SaveOrderTSV$$typecreator5$1.class
+[debug] 	SaveCustomerFeedbackParquet.class
+[debug] 	SaveInventoryORC.class
+[debug] 	SaveCustomerCSV.class
+[debug] 	SaveOrderDetailsKudu$$typecreator5$1.class
+[debug] 	DataSaver.class
+[debug] 	SaveOrderTSV.class
+[debug] 	FilePreparer$$anonfun$4.class
+[debug] Removing the temporary directory used for backing up class files: C:\Users\tufan\Downloads\Apache-Spark-Demo\target\scala-2.11\classes.bak
