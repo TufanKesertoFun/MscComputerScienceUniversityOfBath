@@ -1,0 +1,120 @@
+def is_valid_placement(board, row, col, num):
+    """
+    Check if it's valid to place a number in the given cell by ensuring 
+    the number does not violate Sudoku constraints in row, column, or subgrid.
+    """
+    # Check row and column
+    if num in board[row, :] or num in board[:, col]:
+        return False
+
+    # Check 3x3 subgrid constraints
+    start_row, start_col = 3 * (row // 3), 3 * (col // 3)
+    if num in board[start_row:start_row + 3, start_col:start_col + 3]:
+        return False
+
+    return True
+
+def is_valid_sudoku(board):
+    """
+    Validates if the initial Sudoku board does not contain duplicate values.
+    Returns True if the board is valid, False otherwise.
+    """
+    for i in range(9):
+        row_values = [num for num in board[i, :] if num != 0]
+        col_values = [num for num in board[:, i] if num != 0]
+        if len(set(row_values)) != len(row_values) or len(set(col_values)) != len(col_values):
+            return False  # Duplicate found in row or column
+
+    for r in range(0, 9, 3):
+        for c in range(0, 9, 3):
+            subgrid = board[r:r+3, c:c+3].flatten()
+            subgrid_values = [num for num in subgrid if num != 0]
+            if len(set(subgrid_values)) != len(subgrid_values):
+                return False  # Duplicate found in 3x3 subgrid
+
+    return True
+
+def find_empty_cell_with_mrv(board, possibilities):
+    """
+    Find the empty cell with the fewest possibilities (Most Constrained Variable heuristic).
+    Returns (row, col) of the best empty cell found, or (-1, -1) if none found.
+    """
+    min_options = 10  # Max is 9, so start with an impossible value
+    best_cell = (-1, -1)
+
+    for row in range(9):
+        for col in range(9):
+            if board[row, col] == 0:
+                num_options = len(possibilities[row][col])
+                if num_options < min_options:
+                    min_options = num_options
+                    best_cell = (row, col)
+
+    return best_cell
+
+def update_possibilities(board):
+    """
+    Create and update a list of possible values for each cell.
+    """
+    possibilities = [[set(range(1, 10)) if board[row, col] == 0 else set()
+                      for col in range(9)] for row in range(9)]
+
+    for row in range(9):
+        for col in range(9):
+            if board[row, col] != 0:
+                num = board[row, col]
+                # Eliminate num from the same row, column, and subgrid
+                for i in range(9):
+                    possibilities[row][i].discard(num)
+                    possibilities[i][col].discard(num)
+
+                start_row, start_col = 3 * (row // 3), 3 * (col // 3)
+                for r in range(start_row, start_row + 3):
+                    for c in range(start_col, start_col + 3):
+                        possibilities[r][c].discard(num)
+    
+    return possibilities
+
+def solve_sudoku_optimized(board, possibilities):
+    """
+    Solves the Sudoku puzzle using optimized backtracking with constraint propagation.
+    Returns True if solved, False otherwise.
+    """
+    row, col = find_empty_cell_with_mrv(board, possibilities)
+
+    if row == -1 and col == -1:
+        return True  # Sudoku is solved
+
+    for num in sorted(possibilities[row][col]):
+        if is_valid_placement(board, row, col, num):
+            board[row, col] = num  # Place the number
+            
+            # Save old possibilities for backtracking
+            old_possibilities = [row[:] for row in possibilities]
+            possibilities = update_possibilities(board)
+
+            if solve_sudoku_optimized(board, possibilities):  
+                return True
+            
+            # Undo move (backtrack)
+            board[row, col] = 0  
+            possibilities = old_possibilities  # Restore possibilities
+
+    return False  # No solution found for this branch
+
+def sudoku_solver(sudoku):
+    """
+    Wrapper function to solve a Sudoku puzzle.
+    Returns the solved 9x9 board or a board filled with -1 if no solution exists.
+    """
+    board = sudoku.copy()  # Make a copy to avoid modifying the original input
+    
+    if not is_valid_sudoku(board):
+        return np.full((9, 9), -1)  # Return unsolvable board if invalid input
+    
+    possibilities = update_possibilities(board)
+
+    if solve_sudoku_optimized(board, possibilities):
+        return board  # Return the solved board if a solution is found
+    else:
+        return np.full((9, 9), -1)  # Return unsolvable board if no solution exists
